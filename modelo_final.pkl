@@ -1,0 +1,51 @@
+# isso se encontra no ultimo tópico do google colab
+# SALVANDO O MODELO FINAL (Random Forest) + SCALER
+
+import joblib
+
+# salvar modelo
+joblib.dump(rf, 'modelo_final.pkl')
+
+# salvar scaler (mesmo que RF não use diretamente, pode ser útil para deploy)
+joblib.dump(scaler, 'scaler.pkl')
+
+print("Modelo e scaler salvos com sucesso!")
+
+# CARREGANDO O MODELO E O SCALER
+
+import joblib
+import numpy as np
+import pandas as pd
+
+# carregar modelo salvo
+modelo = joblib.load('modelo_final.pkl')
+scaler = joblib.load('scaler.pkl')
+
+print("Modelo carregado com sucesso!")
+
+# criei um novo conjunto de dados e apliquei o modelo
+novo_dado = pd.DataFrame({
+    "Air temperature [K]": [305],
+    "Process temperature [K]": [315],
+    "Rotational speed [rpm]": [1500],
+    "Torque [Nm]": [40],
+    "Tool wear [min]": [150],
+    "TWF": [0],
+    "HDF": [0],
+    "PWF": [1],
+    "OSF": [0],
+    "RNF": [0]
+})
+
+# random forest nao precisa de scaler
+# Garantir que as colunas estão na mesma ordem do treinamento
+novo_dado = novo_dado.reindex(columns=X.columns, fill_value=0)
+
+# Fazer previsão
+pred = modelo.predict(novo_dado)[0]
+prob = modelo.predict_proba(novo_dado)[0][1]
+
+print("Previsão:", pred)
+print("Probabilidade de falha:", round(prob * 100, 2), "%")
+
+

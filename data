@@ -1,4 +1,4 @@
-não consegui adicionar os dados csv então aqui vai como foi feito
+# não consegui adicionar os dados csv então aqui vai como foi feito
 
 # Install dependencies as needed:
 !pip install kagglehub[pandas-datasets]
